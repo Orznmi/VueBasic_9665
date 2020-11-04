@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unguided</title>
+
+    <script src="vue.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="app">
+
+        <div class="container">
+            <center>
+                <h3>TEBAK ANGKA YUK!</h3>
+                <h5>Yuk tebak kamu dapet angka berapa dari 1-10</h5>
+                <p>Kamu punya {{i}} kesempatan untuk nebak</p>
+            </center>                     
+        <!-- </div>     -->
+
+        <!-- <div class="container2"> -->
+            <br>
+            <!-- Awal -->
+
+            <div class="div" v-if="path=='.'">
+                <center>
+                    <input v-model="guess" type="text" name="input" />
+                    <button @click="checkInput()" class="btn btn-primary">Submit</button>
+                </center>
+            </div>
+
+            <!-- Lebih Besar -->
+            <div class="div" v-if="path=='lebihBesar'">
+                    <center>
+                        <input v-model="guess" type="text" name="input"  disabled/>
+                        <button @click="checkInput()" type="button" class="btn btn-primary" disabled>Submit</button>
+                    </center>
+            </div>
+
+            <!-- Lebih Kecil -->
+            <div class="div" v-if="path=='lebihKecil'">
+                   <center>
+                    <input v-model="guess" type="text" name="input"  disabled/>
+                    <button @click="checkInput()" class="btn btn-primary" disabled>Submit</button>
+                   </center>
+            </div>
+
+            <!--keluar rentang -->
+            <div class="div" v-if="path=='out'">
+                <center>
+                     <h4>Hanya boleh input 1-10</h4>
+                     <input v-model="guess" type="text" name="input"/>
+                     <button @click="checkInput()" class="btn btn-primary">Submit</button>
+                </center>
+         </div>
+
+            <!-- Menang -->
+            <div class="div" v-if="path=='menang'">
+                <center>
+                    <h4>Selamat Kamu Berhasil Menebak Angka {{n}}!</h4>
+                    <button class="btn btn-primary btn-sm" name="again" @click="reload()">Main Lagi</button>                    
+                </center>                    
+            </div>
+
+            <!-- Kalah -->
+            <div class="div" v-if="path=='kalah'">
+            <center>
+                <h4>Yah sayang sekali kamu belum berhasil</h4>
+                <h4>menebak angka {{n}}</h4>
+                <button class="btn btn-danger btn-sm" name="again"  @click="reload()">Coba Lagi</button>
+            </center>
+            </div>
+        </div>
+        <div class="container2">
+            <!-- Lebih Besar -->
+            <div class="div" v-if="path=='lebihBesar'">
+                <center>
+                    <h4>Yah tebakan kamu kebesaran nih!</h4>
+                    <h5>Yuk! coba tebak lagi!</h5>
+                    <button class="btn btn-warning btn-sm" name="again" @click="tebakLagi()">Tebak lagi</button>
+                </center>
+            </div>
+
+            <div class="div" v-if="path=='lebihKecil'">
+                <center>
+                    <h4>Yah tebakan kamu kekecilan nih!</h4>
+                    <h5>Yuk! coba tebak lagi!</h5>
+                    <button class="btn btn-warning btn-sm" name="again" @click="tebakLagi()">Tebak lagi</button>
+                </center>
+            </div>
+        </div>
+
+                
+        <!-- footer -->
+        <footer class="bg-dark text-white">
+            <div class="con">
+                <div class="row text-center pt-3">
+                    <div class="col">
+                        <p>{{orza.nama}} | {{orza.npm}} | {{orza.kelas}}</p>     
+                    </div>
+                </div>
+            </div>
+        
+        </footer>
+    </div>
+</body>
+
+<!-- script -->
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            n:-1,
+            i:3,
+            path:'.',
+            guess:'',
+            orza:{
+                nama:'Orza Naomi',
+                npm:'180709665',
+                kelas:'D'
+            }
+        },
+        methods: {
+            setAcak() {
+                do{
+                    this.n = Math.ceil(Math.random() * 10);
+                    console.log(this.n);
+                }while(this.n>10 || this.n<1);
+            },
+            checkInput(){
+                if(this.n == -1)
+                this.setAcak();
+
+                if(this.guess>=1 && this.guess<=10){
+                    this.i--;
+
+                    if(this.guess == this.n){
+                        this.path="menang";
+                    }
+                    else{
+                        if(this.i==0){
+                            this.path="kalah";
+                        }
+                        else{
+                            if(this.guess>this.n)
+                            {
+                                this.path="lebihBesar";
+                            }
+                            if(this.guess<this.n){
+                                this.path="lebihKecil"; 
+                            };
+                        }
+                    };
+                }else{
+                    this.path="out"
+                }
+            },
+            reload(){
+                this.path =".";
+                this.i=3;
+                this.setAcak();
+            },
+            tebakLagi(){
+                this.path="."
+            },
+        },
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</html>
