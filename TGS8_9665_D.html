@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas</title>
+
+    <script src="vue.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="app">
+
+        <div class="container-tugas">
+            <div class="row">
+              <div class="col-sm isi">
+                  <center>
+                      <h2>Hi Manusia Produktif!</h2>
+                      <p>Yuk buat list yang mau kamu lakukan<br>
+                        Jadwal teratur, hidup lebih bahagia</p>
+                      
+                  </center>
+
+                <form>
+                    <div class="form-group">
+                      <label for="exampleFormControlInput1">What are you doing?</label>
+                      <input v-model="listTodo.judul" type="text" class="form-control" id="exampleFormControlInput1">
+                    </div>
+                    <div class="form-group">
+                    <label for="Prioritas">Priority</label>
+                      <select v-model="listTodo.prioritas" class="form-control">
+                        <option disabled value="">Please select one</option>
+                        <option v-for="(item,index) in item" :key="index">{{item}}</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="exampleFormControlTextarea1">Notes</label>
+                      <textarea v-model="listTodo.catatan" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <button @click="addList()" type="button" class="btn btn-success">Simpan</button>
+                        <input class="btn btn-light" type="reset" value="Reset">
+                    </div>
+                  </form>
+              </div>
+              
+              <!-- BAGIAN TO DO LIST -->
+              <div class="col-sm todo scroll">
+                <center><h3>📝Your To Do List📝</h3>
+                <span class="badge badge-pill badge-success" >{{isi}} Items Left</span>
+                </center>
+                <br>
+                <section class="con-list">
+                    <ul class="todo-list" v-for="(todo,index) in todo" :key="index" v-if="isi>0"> 
+                        <li class="todoList">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <i class="fa fa-times-circle pull-right deleteButton" @click="removeTodo(todo)" aria-hidden="true"></i>                                    
+                                    <span v-if="todo.prioritas == 'Urgent'" class="badge badge-pill badge-warning" >{{todo.prioritas}}</span>
+                                    <span v-if="todo.prioritas == 'Important'" class="badge badge-pill badge-danger" >{{todo.prioritas}}</span>
+                                    <span v-if="todo.prioritas == 'Normal'" class="badge badge-pill badge-primary" >{{todo.prioritas}}</span>
+                                    <h4>{{ todo.judul }}</h4>
+                                    <p>{{todo.catatan}}</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <span v-else>
+                        <h6>Nothing To Do Bro!</h6> 
+                    </span>
+                </section>
+                
+              </div>
+            </div>
+          </div>
+        
+                
+        <!-- footer -->
+        <footer class="bg-dark text-white">
+            <div class="con">
+                <div class="row text-center pt-3">
+                    <div class="col">
+                        <p>{{orza.nama}} | {{orza.npm}} | {{orza.kelas}}</p>     
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Akhir footer -->
+
+    </div>
+</body>
+
+<!-- script -->
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            isi:1,
+            todo:[
+                {
+                    judul:'Mancing Mania',
+                    prioritas:'Important',
+                    catatan:'Jangan lupa siapin umpan malamnya!',
+                },
+            ],
+            listTodo:{
+                judul:'',
+                prioritas:'',
+                catatan:'',
+            },        
+            orza:{
+                nama:'Orza Naomi',
+                npm:'180709665',
+                kelas:'D'
+            },
+            item:[
+                'Urgent','Important','Normal'
+            ],
+        },
+        methods: {
+            addList(){
+                this.todo.push(this.listTodo);
+                this.listTodo=[];
+                this.isi++;
+                // this.todos.push({ id: this.listTodo.length + 1, title: judul });
+				// this.todo = [];
+            },
+            removeTodo:function(todo){
+                var index = this.todo.indexOf(todo);
+                this.todo.splice(index, 1);
+                this.isi--;
+            },
+
+        }
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</html>
